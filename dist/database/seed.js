@@ -3,8 +3,7 @@ import { Pool } from 'pg';
 import * as dotenv from 'dotenv';
 dotenv.config();
 // Neon DB connection string
-const connectionString = process.env.DATABASE_URL ||
-    'postgresql://neondb_owner:npg_TKWl6FrGzXi9@ep-morning-butterfly-a8way6v1-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require';
+const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString,
     ssl: { rejectUnauthorized: false } // Neon requirement
