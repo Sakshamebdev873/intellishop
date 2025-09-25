@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import pool from "../database/db";
 
+
 interface Product {
   id: Number;
   name: string;
