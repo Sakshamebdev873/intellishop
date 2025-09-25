@@ -1,21 +1,7 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import hashPassword from "../libs/hashPassword";
+import bcrypt from 'bcryptjs';
+import attachCookieToResponse from "../libs/attachCookieToResponse";
 import pool from "../database/db";
-const hashPassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(password, salt);
-};
-const generateToken = (user) => {
-    return jwt.sign({ id: user.id, email: user.email, role: user.role }, "secret", { expiresIn: "7d" });
-};
-const attachCookieToResponse = (res, user) => {
-    const token = generateToken(user);
-    res.cookie("token", token, {
-        expires: new Date(Date.now() + 1000 * 24 * 60 * 60),
-        secure: process.env.NODE_ENV == "production" ? true : false,
-        httpOnly: true,
-    });
-};
 export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
