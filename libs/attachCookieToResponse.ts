@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import generateToken from "./generateToken";
+import generateToken from "./generateToken.js";
 
 const attachCookieToResponse = (res: Response, user: any) => {
   const token = generateToken(user);

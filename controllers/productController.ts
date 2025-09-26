@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import pool from "../database/db";
+import pool from "../database/db.js";
 
 
 interface Product {
@@ -32,7 +32,10 @@ export const createProduct = async (req: Request, res: Response) => {
            RETURNING id,name,description,price,stock,category,created_at,updated_at`,
       [name, description || "", price, stock, category || "general"]
     );
+    res.status(201).json(result.rows[0])
   } catch (error: any) {
+    console.log(error);
+    
     res.status(500).json({ error: "Failed to create product" });
   }
 };

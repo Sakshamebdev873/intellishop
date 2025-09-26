@@ -1,4 +1,4 @@
-import generateToken from "./generateToken";
+import generateToken from "./generateToken.js";
 const attachCookieToResponse = (res, user) => {
     const token = generateToken(user);
     res.cookie("token", token, {

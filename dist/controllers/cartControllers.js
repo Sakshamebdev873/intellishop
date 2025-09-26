@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/db.js";
 const getOrCreateCart = async (userId) => {
     try {
         const existing = await pool.query("SELECT id FROM carts WHERE user_id=$1", [

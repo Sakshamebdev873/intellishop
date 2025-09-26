@@ -1,6 +1,6 @@
 import type { Response } from "express";
-import type { AuthRequest } from "../middleware/authMiddleware";
-import pool from "../database/db";
+import type { AuthRequest } from "../middleware/authMiddleware.js";
+import pool from "../database/db.js";
 
 const getOrCreateCart = async (userId: number) => {
   try {

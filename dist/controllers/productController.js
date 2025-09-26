@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/db.js";
 export const createProduct = async (req, res) => {
     const { name, description, price, stock, category } = req.body;
     if (!name || !price || stock == undefined) {
@@ -16,8 +16,10 @@ export const createProduct = async (req, res) => {
         const result = await pool.query(`INSERT INTO products (name,description,price,stock,category)
            VALUES ($1,$2,$3,$4,$5)
            RETURNING id,name,description,price,stock,category,created_at,updated_at`, [name, description || "", price, stock, category || "general"]);
+        res.status(201).json(result.rows[0]);
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Failed to create product" });
     }
 };

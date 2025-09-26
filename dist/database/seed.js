@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import pool from './db';
+import pool from './db.js';
 async function runSchema() {
     try {
         const schema = fs.readFileSync('database/schema.sql', 'utf-8');

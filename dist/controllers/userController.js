@@ -1,7 +1,8 @@
-import hashPassword from "../libs/hashPassword";
+import hashPassword from "../libs/hashPassword.js";
 import bcrypt from 'bcryptjs';
-import attachCookieToResponse from "../libs/attachCookieToResponse";
-import pool from "../database/db";
+import attachCookieToResponse from "../libs/attachCookieToResponse.js";
+import pool from "../database/db.js";
+import generateToken from "../libs/generateToken.js";
 export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -17,6 +18,7 @@ export const registerUser = async (req, res) => {
             return res.status(409).json({ error: "Email already registered" });
         }
         const pasword_hash = await hashPassword(password);
+        console.log(typeof pasword_hash);
         const result = await pool.query(`INSERT INTO users (name,email,password_hash)
             VALUES ($1,$2,$3) RETURNING id,name,email,role,is_active,created_at`, [name, email, pasword_hash]);
         const user = result.rows[0];
@@ -44,7 +46,9 @@ export const login = async (req, res) => {
         if (!validPassword) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-        const token = attachCookieToResponse(res, user);
+        attachCookieToResponse(res, user);
+        const token = generateToken(user);
+        console.log(token);
         res.status(200).json({
             user: {
                 id: user.id,
@@ -61,6 +65,9 @@ export const login = async (req, res) => {
     }
 };
 export const logout = async (req, res) => {
+    if (!req.cookies?.token) {
+        return res.status(400).json({ error: "failed to logout" });
+    }
     res.clearCookie("token");
     res.send(204);
 };
