@@ -20,6 +20,7 @@ const getOrCreateCart = async (userId: number) => {
   }
 };
 
+
 export const addToCart = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
   const { productId, quantity } = req.body;
@@ -80,6 +81,7 @@ export const getCart = async (req: AuthRequest, res: Response) => {
   }
 };
 
+
 export const updateCartItem = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
   const { productId, quantity } = req.body;
@@ -97,7 +99,7 @@ export const updateCartItem = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: "Cart not found" });
     const cartId = cartRes.rows[0].id;
     const productRes = await pool.query(
-      "SELECT stocks FROM products WHERE id=$1",
+      "SELECT stock FROM products WHERE id=$1",
       [productId]
     );
     if (productRes.rows.length === 0)
@@ -121,6 +123,7 @@ export const updateCartItem = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: "Failed to update cart item" });
   }
 };
+
 export const removeCartItem = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
   const { productId } = req.params;
@@ -145,6 +148,7 @@ export const removeCartItem = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: "Failed to remove item" });
   }
 };
+
 export const clearCart = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
   if (!userId) return res.status(401).json({ error: "Unauthorized" });

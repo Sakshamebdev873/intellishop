@@ -4,6 +4,7 @@ import authRouter from './routes/authRoutes.js';
 import productRouter from './routes/productRoutes.js';
 import { authMiddleware, requireAdmin } from './middleware/authMiddleware.js';
 import cookieParser from 'cookie-parser';
+import cartRouter from './routes/cartRoutes.js';
 const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/product', authMiddleware, requireAdmin, productRouter);
+app.use('/api/v1/cart', authMiddleware, cartRouter);
 const start = () => {
     try {
         app.listen(5100, () => {
