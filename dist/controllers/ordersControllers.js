@@ -1,5 +1,4 @@
 import pool from "../database/db.js";
-import { partialDeepStrictEqual } from "assert";
 export const getOrders = async (req, res) => {
     const userId = req.user?.id;
     try {

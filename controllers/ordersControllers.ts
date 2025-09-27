@@ -1,7 +1,6 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/authMiddleware.js";
 import pool from "../database/db.js";
-import { partialDeepStrictEqual } from "assert";
 
 export const getOrders = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
@@ -91,7 +90,6 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
     client.release();
   }
 };
-
 export const updateOrder = async (req: AuthRequest, res: Response) => {
   const orderId = req.params.id;
   const userId = req.user?.id;
