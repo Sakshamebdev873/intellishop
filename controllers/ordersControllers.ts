@@ -82,40 +82,73 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
       );
     }
     await client.query("COMMIT");
-        res.status(201).json(order);
+    res.status(201).json(order);
   } catch (error) {
-     await client.query("ROLLBACK");
-        console.error(error);
-        res.status(500).json({ message: "Failed to create order." });
-  }finally {
-    client.release()
+    await client.query("ROLLBACK");
+    console.error(error);
+    res.status(500).json({ message: "Failed to create order." });
+  } finally {
+    client.release();
   }
 };
 
-export const updateOrder = async(req:AuthRequest,res:Response) =>{
-    const orderId = req.params.id
-    const userId = req.user?.id
-    const {shipping_address,status} = req.body
-    const allowedStatuses = ["pending","paid","shipped","delivered","cancelled"]
-    if(status && !allowedStatuses.includes(status)){
-        return res.status(400).json({message : "Invalid order status"})
+export const updateOrder = async (req: AuthRequest, res: Response) => {
+  const orderId = req.params.id;
+  const userId = req.user?.id;
+  const { shipping_address, status } = req.body;
+  const allowedStatuses = [
+    "pending",
+    "paid",
+    "shipped",
+    "delivered",
+    "cancelled",
+  ];
+  if (status && !allowedStatuses.includes(status)) {
+    return res.status(400).json({ message: "Invalid order status" });
+  }
+  if (shipping_address && shipping_address.trim() === "") {
+    return res
+      .status(400)
+      .json({ message: "Shipping address cannot be empty." });
+  }
+  try {
+    const checkOrder = await pool.query(
+      `SELECT * FROM orders WHERE id=$1 AND user_id = $2`,
+      [orderId, userId]
+    );
+    if (checkOrder.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Order not found or unauthorized" });
     }
-    if (shipping_address && shipping_address.trim() === "") {
-        return res.status(400).json({ message: "Shipping address cannot be empty." });
-    }
-    try {
-        const checkOrder = await pool.query(
-            `SELECT * FROM orders WHERE id=$1 AND user_id = $2`,[orderId,userId]
-        )
-        if(checkOrder.rows.length === 0){
-            return res.status(404).json({message : "Order not found or unauthorized"})
-        }
-        const result = await pool.query(
-            `UPDATE orders 
+    const result = await pool.query(
+      `UPDATE orders 
             SET shipping_address = COALESCE($1,shipping_address)
             status = COALESCE($2)`
-        )
-    } catch (error) {
-        
+    );
+    res.status(200).json(result.rows[0]);
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to update order." });
+  }
+};
+export const deleteOrder = async (req: AuthRequest, res: Response) => {
+  const orderId = req.params.id;
+  const userId = req.user?.id;
+  try {
+    const checkOrder = await pool.query(
+      `SELECT * FROM orders WHERE id=$1 AND user_id = $2`,
+      [orderId, userId]
+    );
+    if (checkOrder.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Order not found or unauthorised to delete it." });
     }
-}
+    await pool.query(`DELETE FROM orders WHERE id=$1`, [orderId]);
+    res.status(200).json({ message: "Order deleted succesfully" });
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to delete order." });
+  }
+};
