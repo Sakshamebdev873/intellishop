@@ -80,6 +80,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+
 export const logout = async (req: Request, res: Response) => {
   if(!req.cookies?.token){
     return res.status(400).json({error:"failed to logout"})

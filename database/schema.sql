@@ -21,7 +21,7 @@ CREATE TABLE products (
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
-
+-- added updated at
 CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
     product_id INT REFERENCES products (id) ON DELETE CASCADE,
