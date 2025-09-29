@@ -1,4 +1,4 @@
 import type { Request, Response } from "express";
-declare const getRecommendations: (req: Request, res: Response) => Promise<void>;
-export default getRecommendations;
+export declare const getRecommendations: (req: Request, res: Response) => Promise<void>;
+export declare const getRecommendationsByText: (req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=recommendation.d.ts.map

@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import pool from "../database/db.js";
+import { model } from "../utils/genAi.js";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-const model = genAI.getGenerativeModel({ model: "gemini-embedding-001" });
+
 
 async function embedProducts() {
   const products = await pool.query(
