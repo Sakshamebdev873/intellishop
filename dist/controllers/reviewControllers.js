@@ -51,9 +51,9 @@ export const updateReview = async (req, res) => {
     try {
         const result = await pool.query(`
             UPDATE reviews 
-            SET rating = COALESCE($1,rating)
-               comment = COALESCE($2,comment)
-               updated_at = NOW()
+            SET rating = COALESCE($1,rating),
+                comment = COALESCE($2,comment),
+                updated_at = NOW()
             WHERE id =$3 AND user_id = $4
             RETURNING *
             `, [rating, comment, reviewId, userId]);
