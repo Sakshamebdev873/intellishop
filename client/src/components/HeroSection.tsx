@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import AnimatedBackground from './AnimatedBackground'; // Import the new component
-
+import InteractiveArt from './InteractiveArt'
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -64,13 +64,7 @@ const HeroSection = () => {
           className="hidden md:block"
         >
           {/* Using a semi-transparent card to let the background show through */}
-          <div className="bg-white/30 backdrop-blur-md rounded-lg p-4 shadow-2xl">
-            <img
-              src="https://via.placeholder.com/600x600.png"
-              alt="Stylish product display"
-              className="rounded-lg"
-            />
-          </div>
+       <InteractiveArt/>
         </motion.div>
       </div>
     </section>

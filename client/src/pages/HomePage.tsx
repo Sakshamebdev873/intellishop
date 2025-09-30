@@ -5,6 +5,8 @@ import HeroSection  from '../components/HeroSection';
 import  FeaturedProducts  from '../components/FeaturedProducts';
 import  Footer  from '../components/Footer';
 import { NoiseOverlay } from '../components/NoiseOverlay';
+import { OurCraftSection } from '../components/OurCraftSection';
+import { JournalSection } from '../components/JournalSection';
 
 function Homepage() {
   return (
@@ -14,6 +16,8 @@ function Homepage() {
       <main>
         <HeroSection />
         <FeaturedProducts />
+        <OurCraftSection/>
+        <JournalSection/>
         {/* You can add more sections like About, Testimonials, etc. here */}
       </main>
       <Footer />
