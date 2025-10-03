@@ -1,9 +1,13 @@
 import React from 'react'
 import Homepage from './pages/HomePage'
+import { Route, Routes } from 'react-router'
 
 const App = () => {
   return (
-    <Homepage/>
+    <Routes>
+<Route path='/' element={<Homepage/>}/>
+
+    </Routes>
   )
 }
 
